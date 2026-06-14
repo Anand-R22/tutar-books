@@ -1,0 +1,28 @@
+{
+  "name": "tutar-books",
+  "version": "1.0.0",
+  "description": "TutAR Books \u2014 CBSE textbook + question paper library for Indian teachers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "download": "node scripts/download-pdfs.js",
+    "download-archive": "node scripts/download-from-archive.js",
+    "scan-pdfs": "node scripts/scan-pdfs.js",
+    "prepare-upload": "node scripts/prepare-upload.js",
+    "scan-papers": "node scripts/scan-papers.js",
+    "prepare-papers-upload": "node scripts/prepare-papers-upload.js",
+    "download-papers": "node scripts/download-papers.js"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "dotenv": "^16.4.5",
+    "@supabase/supabase-js": "^2.45.4",
+    "adm-zip": "^0.5.16",
+    "pdf-lib": "^1.17.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

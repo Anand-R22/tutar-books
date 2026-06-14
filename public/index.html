@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TutAR Books — Textbook Library for Teachers</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ═══════════ AUTH SCREEN ═══════════ -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="logo-mark">T</div>
+        <h1 class="brand-name">TutAR Books</h1>
+        <p class="brand-tagline">Textbook Library for Indian Teachers</p>
+      </div>
+
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-tab="login">Sign in</button>
+        <button type="button" class="auth-tab" data-tab="signup">Create account</button>
+      </div>
+
+      <form id="loginForm" class="auth-form">
+        <label>
+          <span>Email</span>
+          <input type="email" id="loginEmail" required autocomplete="email" />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" id="loginPassword" required autocomplete="current-password" />
+        </label>
+        <div id="loginError" class="auth-error"></div>
+        <button type="submit" class="auth-submit">Sign in</button>
+      </form>
+
+      <form id="signupForm" class="auth-form" style="display:none">
+        <label>
+          <span>Full name</span>
+          <input type="text" id="signupName" required autocomplete="name" />
+        </label>
+        <label>
+          <span>Email</span>
+          <input type="email" id="signupEmail" required autocomplete="email" />
+        </label>
+        <label>
+          <span>Password</span>
+          <input type="password" id="signupPassword" required minlength="6" autocomplete="new-password" />
+          <small class="hint">At least 6 characters</small>
+        </label>
+        <div id="signupError" class="auth-error"></div>
+        <button type="submit" class="auth-submit">Create account</button>
+      </form>
+    </div>
+
+    <div class="auth-footer">
+      A library of NCERT &amp; ICSE textbooks and previous years' question papers.
+    </div>
+  </div>
+
+  <!-- ═══════════ MAIN APP ═══════════ -->
+  <div id="mainApp" class="main-app" style="display:none">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="topbar-brand">
+        <span class="logo-mark small">T</span>
+        <span class="topbar-name">TutAR Books</span>
+      </div>
+
+      <nav class="topbar-nav">
+        <button type="button" class="nav-btn active" data-view="library">Library</button>
+        <button type="button" class="nav-btn" data-view="papers">Question papers</button>
+        <button type="button" class="nav-btn" data-view="my-uploads">My uploads</button>
+      </nav>
+
+      <div class="topbar-user">
+        <span id="userEmail" class="user-email"></span>
+        <button type="button" id="signoutBtn" class="signout-btn">Sign out</button>
+      </div>
+    </header>
+
+    <!-- FILTERS -->
+    <section class="filter-bar">
+      <div class="filter-group">
+        <label class="filter-label">Board</label>
+        <div class="segmented" id="boardFilter">
+          <button type="button" class="seg-btn active" data-value="CBSE">CBSE</button>
+          <button type="button" class="seg-btn" data-value="ICSE">ICSE</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Class</label>
+        <select id="classFilter" class="select-pill"></select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Subject</label>
+        <select id="subjectFilter" class="select-pill"></select>
+      </div>
+
+      <button type="button" id="uploadBtn" class="upload-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Upload your own
+      </button>
+    </section>
+
+    <!-- RESULTS AREA -->
+    <main class="results-area">
+      <div class="results-header">
+        <h2 id="resultsTitle" class="results-title">Class 6 · Mathematics · CBSE</h2>
+        <span id="resultsCount" class="results-count"></span>
+      </div>
+
+      <div id="resultsGrid" class="results-grid"></div>
+
+      <div id="emptyState" class="empty-state" style="display:none">
+        <div class="empty-art" id="emptyArt">📚</div>
+        <h3 class="empty-title" id="emptyTitle">No books here yet</h3>
+        <p class="empty-text" id="emptyText">We don't have this combination in our library yet.<br/>You can upload your own PDF using the button above.</p>
+        <button type="button" class="empty-action-btn" id="emptyUploadBtn" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Upload your PDF
+        </button>
+      </div>
+    </main>
+
+    <!-- ═══════════ INLINE PDF VIEWER (replaces library when active) ═══════════ -->
+    <section id="viewerSection" class="viewer-section" style="display:none">
+      <header class="viewer-bar">
+        <button type="button" id="viewerBack" class="viewer-back-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          Back to library
+        </button>
+        <div class="viewer-info-inline">
+          <h2 id="viewerTitle"></h2>
+          <p id="viewerMeta"></p>
+        </div>
+        <div class="viewer-actions">
+          <a id="viewerOpenNew" href="#" target="_blank" rel="noopener" class="viewer-btn">Open in new tab ↗</a>
+          <a id="viewerDownload" href="#" download class="viewer-btn">Download</a>
+        </div>
+      </header>
+      <div class="viewer-stage">
+        <div id="viewerLoading" class="viewer-loading">
+          <div class="viewer-spinner"></div>
+          <p class="viewer-loading-text">Loading PDF from cloud…</p>
+          <p class="viewer-loading-hint">Big books may take 10-30 seconds first time. After that they're fast.</p>
+        </div>
+        <iframe id="viewerFrame" class="viewer-frame-inline" title="PDF viewer"></iframe>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══════════ UPLOAD MODAL ═══════════ -->
+  <div id="uploadModal" class="modal" style="display:none">
+    <div class="modal-content upload-content">
+      <header class="modal-header">
+        <h3>Upload your own PDF</h3>
+        <button type="button" class="upload-close" data-close>✕</button>
+      </header>
+      <form id="uploadForm" class="upload-form">
+        <div class="form-row">
+          <label>
+            <span>What is this?</span>
+            <select id="uploadKind" required>
+              <option value="textbook">Textbook</option>
+              <option value="question-paper">Question Paper</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label>
+            <span>Title</span>
+            <input type="text" id="uploadTitle" required placeholder="e.g. Mathematics — Class 10 Practice" />
+          </label>
+        </div>
+
+        <div class="form-row two-col">
+          <label>
+            <span>Board</span>
+            <select id="uploadBoard" required>
+              <option value="CBSE">CBSE</option>
+              <option value="ICSE">ICSE</option>
+            </select>
+          </label>
+          <label>
+            <span>Class</span>
+            <select id="uploadClass" required></select>
+          </label>
+        </div>
+
+        <div class="form-row two-col">
+          <label>
+            <span>Subject</span>
+            <input type="text" id="uploadSubject" required placeholder="e.g. Mathematics" />
+          </label>
+          <label id="uploadYearLabel" style="display:none">
+            <span>Year</span>
+            <input type="text" id="uploadYear" placeholder="e.g. 2024" />
+          </label>
+        </div>
+
+        <div class="form-row">
+          <label class="file-drop">
+            <input type="file" id="uploadFile" accept="application/pdf" required hidden />
+            <div class="file-drop-inner">
+              <span class="file-drop-icon">↑</span>
+              <span class="file-drop-text">Choose a PDF file</span>
+              <span id="fileName" class="file-name"></span>
+            </div>
+          </label>
+        </div>
+
+        <div id="uploadError" class="upload-error"></div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" data-close>Cancel</button>
+          <button type="submit" class="btn-submit" id="uploadSubmit">Upload</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════ TOAST ═══════════ -->
+  <div id="toast" class="toast"></div>
+
+  <script src="/config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

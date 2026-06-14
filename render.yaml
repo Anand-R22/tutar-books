@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: tutar-books
+    env: node
+    region: singapore       # Closest to India for low latency
+    plan: free              # Free tier (sleeps after 15 min inactivity)
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false         # Set manually in Render dashboard
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
