@@ -177,11 +177,19 @@ function populateFilters() {
   populateSubjects();
 }
 
+// Strips " Paper 1" / " Paper 2" / " Paper N" suffix so multiple paper variants
+// collapse to a single subject (e.g. "Biology Paper 1" -> "Biology").
+// CBSE subjects (no Paper N suffix) pass through unchanged.
+function baseSubject(s) {
+  return String(s || "").replace(/\s+Paper\s*\d+\s*$/i, "").trim();
+}
+
 function populateSubjects() {
   // Pull subjects from the live data for the current view + board + class.
-  // - "papers" view: use questionPapers subjects
-  // - "library" view: use textbook subjects
-  // - "my-uploads" view: keep current subject (it's just a context for upload)
+  // - "papers" view: use questionPapers subjects, collapsed by baseSubject so
+  //   "Biology Paper 1" and "Biology Paper 2" appear once as "Biology".
+  // - "library" view: use textbook subjects as-is.
+  // - "my-uploads" view: union of both, also collapsed.
   const { board, class: cls } = currentFilter;
   const key = `${board}|${cls}`;
 
@@ -189,14 +197,15 @@ function populateSubjects() {
   const subjMap = catalog.subjectsByBoardClass || {};
 
   if (currentView === "papers") {
-    subjects = subjMap.papers?.[key] || [];
+    const raw = subjMap.papers?.[key] || [];
+    subjects = Array.from(new Set(raw.map(baseSubject))).sort();
   } else if (currentView === "library") {
     subjects = subjMap.library?.[key] || [];
   } else {
-    // my-uploads: show union of both so user can pick anything they uploaded
+    // my-uploads: union of textbook + paper subjects (also collapsed)
     const set = new Set([
       ...(subjMap.library?.[key] || []),
-      ...(subjMap.papers?.[key] || []),
+      ...(subjMap.papers?.[key] || []).map(baseSubject),
     ]);
     subjects = Array.from(set).sort();
   }
@@ -285,9 +294,20 @@ async function loadResults() {
     const data = await res.json();
     items = data.books;
   } else if (currentView === "papers") {
-    const res = await fetch(`/api/question-papers?board=${board}&class=${cls}&subject=${encodeURIComponent(subject)}`);
+    // Fetch by board+class only (no subject filter) — then collapse Paper 1/2
+    // variants on the client so "Biology" shows both papers under one group.
+    const res = await fetch(`/api/question-papers?board=${board}&class=${cls}`);
     const data = await res.json();
-    items = data.papers;
+    items = (data.papers || []).filter((p) => baseSubject(p.subject) === subject);
+
+    // Sort: newest year first, then Paper 1 before Paper 2.
+    // Years like "2022-Sem1" sort naturally after stripping non-numeric prefix.
+    items.sort((a, b) => {
+      const yearCmp = String(b.year).localeCompare(String(a.year));
+      if (yearCmp !== 0) return yearCmp;
+      return String(a.subject).localeCompare(String(b.subject));
+    });
+
     kind = "question-paper";
   } else if (currentView === "my-uploads") {
     const token = (await sb.auth.getSession()).data.session?.access_token;
