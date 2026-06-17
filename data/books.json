@@ -3,11 +3,13 @@
     "description": "TutAR Books textbook catalog. NCERT/CBSE books are downloaded locally for fast embedded viewing. ICSE textbooks are copyrighted by private publishers (Selina, ML Aggarwal, etc.) and not freely distributable — teachers upload their own ICSE PDFs.",
     "ncert_url_pattern": "https://ncert.nic.in/textbook.php?{code}=0-{chapters}",
     "lastUpdated": "2026-06-09",
-    "lastGitHubSync": "2026-06-11T13:51:14.463Z",
+    "lastGitHubSync": "2026-06-17T13:28:07.019Z",
     "pdfHost": "GitHub Release: Anand-R22/tutar-books@v1.0-textbooks",
     "lastPapersScan": "2026-06-13T08:14:21.330Z",
     "lastCatalogExpand": "2026-06-13T08:14:05.305Z",
-    "lastPapersSync": "2026-06-12T15:30:57.172Z"
+    "lastPapersSync": "2026-06-12T15:30:57.172Z",
+    "lastSplit": "2026-06-17T06:56:15.915Z",
+    "lastScan": "2026-06-17T07:02:21.572Z"
   },
   "boards": [
     "CBSE",
@@ -955,16 +957,52 @@
       "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Chemistry.pdf"
     },
     {
-      "id": "cbse-12-bio",
+      "id": "cbse-12-bio-part-1",
       "board": "CBSE",
       "class": "12",
-      "subject": "Biology",
-      "title": "Biology — Class 12",
+      "subject": "Biology Part 1",
+      "title": "Biology Part 1 — Class 12",
       "publisher": "NCERT",
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_1.pdf"
+    },
+    {
+      "id": "cbse-12-bio-part-2",
+      "board": "CBSE",
+      "class": "12",
+      "subject": "Biology Part 2",
+      "title": "Biology Part 2 — Class 12",
+      "publisher": "NCERT",
+      "year": "2024-25",
+      "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
+      "type": "official",
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_2.pdf"
+    },
+    {
+      "id": "cbse-12-bio-part-3",
+      "board": "CBSE",
+      "class": "12",
+      "subject": "Biology Part 3",
+      "title": "Biology Part 3 — Class 12",
+      "publisher": "NCERT",
+      "year": "2024-25",
+      "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
+      "type": "official",
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_3.pdf"
+    },
+    {
+      "id": "cbse-12-bio-part-4",
+      "board": "CBSE",
+      "class": "12",
+      "subject": "Biology Part 4",
+      "title": "Biology Part 4 — Class 12",
+      "publisher": "NCERT",
+      "year": "2024-25",
+      "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
+      "type": "official",
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_4.pdf"
     },
     {
       "id": "cbse-12-cs",
