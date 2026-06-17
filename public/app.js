@@ -177,11 +177,16 @@ function populateFilters() {
   populateSubjects();
 }
 
-// Strips " Paper 1" / " Paper 2" / " Paper N" suffix so multiple paper variants
-// collapse to a single subject (e.g. "Biology Paper 1" -> "Biology").
-// CBSE subjects (no Paper N suffix) pass through unchanged.
+// Collapses subject variants into a single base subject so the dropdown
+// shows one entry instead of many:
+//   "Biology Paper 1" / "Biology Paper 2"   -> "Biology"
+//   "Biology Part 1" / "Biology Part 4"     -> "Biology"
+// Plain subjects (no suffix) pass through unchanged.
 function baseSubject(s) {
-  return String(s || "").replace(/\s+Paper\s*\d+\s*$/i, "").trim();
+  return String(s || "")
+    .replace(/\s+Paper\s*\d+\s*$/i, "")
+    .replace(/\s+Part\s*\d+\s*$/i, "")
+    .trim();
 }
 
 function populateSubjects() {
@@ -200,11 +205,13 @@ function populateSubjects() {
     const raw = subjMap.papers?.[key] || [];
     subjects = Array.from(new Set(raw.map(baseSubject))).sort();
   } else if (currentView === "library") {
-    subjects = subjMap.library?.[key] || [];
+    // Collapse "Biology Part 1..4" to a single "Biology" dropdown entry
+    const raw = subjMap.library?.[key] || [];
+    subjects = Array.from(new Set(raw.map(baseSubject))).sort();
   } else {
-    // my-uploads: union of textbook + paper subjects (also collapsed)
+    // my-uploads: union of textbook + paper subjects (both collapsed)
     const set = new Set([
-      ...(subjMap.library?.[key] || []),
+      ...(subjMap.library?.[key] || []).map(baseSubject),
       ...(subjMap.papers?.[key] || []).map(baseSubject),
     ]);
     subjects = Array.from(set).sort();
@@ -290,9 +297,14 @@ async function loadResults() {
   let kind = "textbook";
 
   if (currentView === "library") {
-    const res = await fetch(`/api/textbooks?board=${board}&class=${cls}&subject=${encodeURIComponent(subject)}`);
+    // Fetch by board+class only — collapse "Biology Part 1..4" so picking
+    // "Biology" returns all four parts in one card grid.
+    const res = await fetch(`/api/textbooks?board=${board}&class=${cls}`);
     const data = await res.json();
-    items = data.books;
+    items = (data.books || []).filter((b) => baseSubject(b.subject) === subject);
+
+    // Sort so "Biology Part 1" precedes "Part 2" (alphabetic on full subject)
+    items.sort((a, b) => String(a.subject).localeCompare(String(b.subject)));
   } else if (currentView === "papers") {
     // Fetch by board+class only (no subject filter) — then collapse Paper 1/2
     // variants on the client so "Biology" shows both papers under one group.
