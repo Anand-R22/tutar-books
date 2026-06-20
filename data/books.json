@@ -3,13 +3,16 @@
     "description": "TutAR Books textbook catalog. NCERT/CBSE books are downloaded locally for fast embedded viewing. ICSE textbooks are copyrighted by private publishers (Selina, ML Aggarwal, etc.) and not freely distributable — teachers upload their own ICSE PDFs.",
     "ncert_url_pattern": "https://ncert.nic.in/textbook.php?{code}=0-{chapters}",
     "lastUpdated": "2026-06-09",
-    "lastGitHubSync": "2026-06-17T13:28:07.019Z",
+    "lastGitHubSync": "2026-06-20T08:09:37.866Z",
     "pdfHost": "GitHub Release: Anand-R22/tutar-books@v1.0-textbooks",
     "lastPapersScan": "2026-06-13T08:14:21.330Z",
     "lastCatalogExpand": "2026-06-13T08:14:05.305Z",
     "lastPapersSync": "2026-06-12T15:30:57.172Z",
-    "lastSplit": "2026-06-17T06:56:15.915Z",
-    "lastScan": "2026-06-17T07:02:21.572Z"
+    "lastSplit": "2026-06-20T06:47:17.467Z",
+    "lastScan": "2026-06-20T06:47:39.666Z",
+    "lastNotebookSync": "2026-06-19T07:08:37.011Z",
+    "lastNotebookReconcile": "2026-06-19T07:43:53.422Z",
+    "lastAiUnavailableMark": "2026-06-20T14:23:14.681Z"
   },
   "boards": [
     "CBSE",
@@ -144,7 +147,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?aemd1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-1-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-1-English.pdf",
+      "notebook_book_id": "b7836a3d-bbf9-4013-980c-54bb6613c4a1"
     },
     {
       "id": "cbse-1-math",
@@ -156,7 +160,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?aejm1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-1-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-1-Mathematics.pdf",
+      "notebook_book_id": "5136f1a6-0d9e-4c5c-99e6-fb0c242e7590"
     },
     {
       "id": "cbse-1-hindi",
@@ -168,7 +173,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?ahsr1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-1-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-1-Hindi.pdf",
+      "notebook_book_id": "a78c3de9-2e90-4ed0-bf39-a033fb4da541"
     },
     {
       "id": "cbse-1-evs",
@@ -191,7 +197,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?bemd1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-2-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-2-English.pdf",
+      "notebook_book_id": "b7c24a10-08a4-477d-8f9f-620f6e7f6129"
     },
     {
       "id": "cbse-2-math",
@@ -203,7 +210,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?bejm1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-2-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-2-Mathematics.pdf",
+      "notebook_book_id": "00212bd2-5cbb-4058-ad36-9d945a621fdd"
     },
     {
       "id": "cbse-2-hindi",
@@ -215,7 +223,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?bhsr1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-2-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-2-Hindi.pdf",
+      "notebook_book_id": "d41c26f3-2fa8-4d4a-ba84-49650f312ebc"
     },
     {
       "id": "cbse-2-evs",
@@ -238,7 +247,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?cemm1=0-14",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-Mathematics.pdf",
+      "notebook_book_id": "29b0fac2-b93e-4478-961e-d0edb32a62eb",
+      "notebook_chunks": 67
     },
     {
       "id": "cbse-3-eng",
@@ -250,7 +261,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?cesa1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-English.pdf",
+      "notebook_book_id": "9ddc3d10-8273-4205-809f-4c735bd04cc0",
+      "notebook_chunks": 36
     },
     {
       "id": "cbse-3-evs",
@@ -262,7 +275,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?ceel1=0-24",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-Environmental_Studies.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-Environmental_Studies.pdf",
+      "notebook_book_id": "84a54c0f-8bf6-4786-b3d6-54c7e1c3a7c5",
+      "notebook_chunks": 54
     },
     {
       "id": "cbse-3-hindi",
@@ -274,7 +289,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?chve1=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-3-Hindi.pdf",
+      "notebook_book_id": "1b096ce4-f7ec-4ef0-b689-ed4f487d8c2a",
+      "notebook_chunks": 58
     },
     {
       "id": "cbse-4-math",
@@ -286,7 +303,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?demm1=0-14",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-Mathematics.pdf",
+      "notebook_book_id": "f39615fd-3aca-4010-bfd9-4ddb8b342081",
+      "notebook_chunks": 81
     },
     {
       "id": "cbse-4-eng",
@@ -298,7 +317,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?demr1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-English.pdf",
+      "notebook_book_id": "05feabca-1275-4e57-8f41-f606997f8b6c",
+      "notebook_chunks": 44
     },
     {
       "id": "cbse-4-hindi",
@@ -310,7 +331,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?dhrj1=0-14",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-Hindi.pdf",
+      "notebook_book_id": "43a2c21d-de22-4c41-bcd7-b1c0316e11a4",
+      "notebook_chunks": 81
     },
     {
       "id": "cbse-4-evs",
@@ -322,7 +345,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?deel1=0-27",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-Environmental_Studies.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-4-Environmental_Studies.pdf",
+      "notebook_book_id": "033ccd3d-1262-4a5d-95db-911e55e2f308"
     },
     {
       "id": "cbse-5-math",
@@ -334,7 +358,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?eemm1=0-14",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-5-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-5-Mathematics.pdf",
+      "notebook_book_id": "66970f05-566f-4aab-9d26-be542846d2a2",
+      "notebook_chunks": 92
     },
     {
       "id": "cbse-5-eng",
@@ -346,7 +372,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?eemr1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-5-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-5-English.pdf",
+      "notebook_book_id": "4a7fb0ab-6d92-4d60-89d8-196e9ddc2c01"
     },
     {
       "id": "cbse-5-hindi",
@@ -358,7 +385,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?ehrj1=0-18",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-5-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-5-Hindi.pdf",
+      "notebook_book_id": "1ef82f61-bc83-44da-b04d-dd1ef994abac",
+      "notebook_chunks": 87
     },
     {
       "id": "cbse-5-evs",
@@ -381,7 +410,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?fegp1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Mathematics.pdf",
+      "notebook_book_id": "7fac1814-4291-4277-af6a-94143aa8be06",
+      "notebook_chunks": 188
     },
     {
       "id": "cbse-6-sci",
@@ -393,7 +424,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?fesc1=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Science.pdf",
+      "notebook_book_id": "8be49c7b-b89a-4026-b4e4-a31277b74740",
+      "notebook_chunks": 118
     },
     {
       "id": "cbse-6-eng",
@@ -405,7 +438,8 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?fepw1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-English.pdf",
+      "notebook_book_id": "7606c0c6-a176-4142-9894-67f67bb577c2"
     },
     {
       "id": "cbse-6-social",
@@ -417,7 +451,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?fess1=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Social_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Social_Science.pdf",
+      "notebook_book_id": "a97aed4a-3413-46c6-a35f-1243a9d01fbc",
+      "notebook_chunks": 79
     },
     {
       "id": "cbse-6-hindi",
@@ -429,7 +465,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?fhml1=0-13",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Hindi.pdf",
+      "notebook_book_id": "72de59a6-59c2-4bf1-8206-20fb3344de28",
+      "notebook_chunks": 107
     },
     {
       "id": "cbse-6-sanskrit",
@@ -441,7 +479,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?fsdp1=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Sanskrit.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-6-Sanskrit.pdf",
+      "notebook_book_id": "1dd5eab4-bb75-41a0-84c4-b61f7d8c9ac5",
+      "notebook_chunks": 75
     },
     {
       "id": "cbse-7-math",
@@ -453,7 +493,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?gemh1=0-15",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Mathematics.pdf",
+      "notebook_book_id": "e73a346c-e657-475b-9aef-64b4b896dea5",
+      "notebook_chunks": 148
     },
     {
       "id": "cbse-7-sci",
@@ -465,7 +507,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?gesc1=0-18",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Science.pdf",
+      "notebook_book_id": "c139ff21-91ab-46b9-812f-a49d8d53e084",
+      "notebook_chunks": 113
     },
     {
       "id": "cbse-7-eng",
@@ -477,7 +521,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?gehc1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-English.pdf",
+      "notebook_book_id": "c2d2e9cd-acfe-4e71-a5f9-6638618b06f4",
+      "notebook_chunks": 60
     },
     {
       "id": "cbse-7-social",
@@ -489,7 +535,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?gess1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Social_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Social_Science.pdf",
+      "notebook_book_id": "16bc8905-7a07-4701-91b7-810b782b53be",
+      "notebook_chunks": 54
     },
     {
       "id": "cbse-7-hindi",
@@ -501,7 +549,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?ghvs1=0-20",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Hindi.pdf",
+      "notebook_book_id": "1b7b2f30-3562-42cf-82ea-5ed8b9b505a8",
+      "notebook_chunks": 57
     },
     {
       "id": "cbse-7-sanskrit",
@@ -513,7 +563,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?gsrh1=0-15",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Sanskrit.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-7-Sanskrit.pdf",
+      "notebook_book_id": "dd9769a5-6997-4cfb-b981-aec7d549886c",
+      "notebook_chunks": 82
     },
     {
       "id": "cbse-8-math",
@@ -525,7 +577,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?hemh1=0-13",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Mathematics.pdf",
+      "notebook_book_id": "d7af1aba-e77c-464a-8a37-a67343e77350",
+      "notebook_chunks": 127
     },
     {
       "id": "cbse-8-sci",
@@ -537,7 +591,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?hesc1=0-13",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Science.pdf",
+      "notebook_book_id": "cc763c0a-34eb-4f80-b84f-cd4b11a1a098",
+      "notebook_chunks": 124
     },
     {
       "id": "cbse-8-eng",
@@ -549,7 +605,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?hehd1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-English.pdf",
+      "notebook_book_id": "05dd64e6-571c-49a7-b468-997930ffdc6c",
+      "notebook_chunks": 66
     },
     {
       "id": "cbse-8-social",
@@ -561,7 +619,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?hess3=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Social_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Social_Science.pdf",
+      "notebook_book_id": "05b46838-6f0d-410a-b3be-fc54c9194d81",
+      "notebook_chunks": 88
     },
     {
       "id": "cbse-8-hindi",
@@ -573,7 +633,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?hhvs1=0-18",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Hindi.pdf",
+      "notebook_book_id": "8bb95e50-c1c5-4182-b0b7-98509c6483d7",
+      "notebook_chunks": 53
     },
     {
       "id": "cbse-8-sanskrit",
@@ -585,7 +647,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?hsrh1=0-15",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Sanskrit.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-8-Sanskrit.pdf",
+      "notebook_book_id": "cc1b6667-b4af-4d54-8a74-4ed3c5a32236",
+      "notebook_chunks": 98
     },
     {
       "id": "cbse-9-math",
@@ -597,7 +661,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?iemh1=0-15",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Mathematics.pdf",
+      "notebook_book_id": "b8cbd1a0-fce9-4779-831d-2d3710872a34",
+      "notebook_chunks": 142
     },
     {
       "id": "cbse-9-sci",
@@ -609,7 +675,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?iesc1=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Science.pdf",
+      "notebook_book_id": "8c80808b-6dca-445d-91b3-91cf7df7b567",
+      "notebook_chunks": 261
     },
     {
       "id": "cbse-9-eng",
@@ -621,7 +689,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?iebe1=0-11",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-English.pdf",
+      "notebook_book_id": "fcca81bf-609b-441d-8c47-28247542bab6",
+      "notebook_chunks": 137
     },
     {
       "id": "cbse-9-social",
@@ -633,7 +703,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?iess3=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Social_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Social_Science.pdf",
+      "notebook_book_id": "eddd7058-6e1e-4015-b1b6-b2542e3255e7",
+      "notebook_chunks": 88
     },
     {
       "id": "cbse-9-hindi",
@@ -645,7 +717,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?ihks1=0-17",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Hindi.pdf",
+      "notebook_book_id": "95f16284-329e-400a-81f9-c554c10ac798",
+      "notebook_chunks": 63
     },
     {
       "id": "cbse-9-sanskrit",
@@ -657,7 +731,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?issh1=0-12",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Sanskrit.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-9-Sanskrit.pdf",
+      "notebook_book_id": "fcc404f7-8f0b-4376-8b04-4f64a0a1ee16",
+      "notebook_chunks": 111
     },
     {
       "id": "cbse-9-it",
@@ -680,7 +756,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?jemh1=0-15",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Mathematics.pdf",
+      "notebook_book_id": "3a77765e-fc22-40d2-b473-d93dcda05b82",
+      "notebook_chunks": 13
     },
     {
       "id": "cbse-10-sci",
@@ -692,7 +770,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?jesc1=0-13",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Science.pdf",
+      "notebook_book_id": "bd971747-9cb6-42d0-b391-5d8471bdb49b",
+      "notebook_chunks": 188
     },
     {
       "id": "cbse-10-eng",
@@ -704,7 +784,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?jeff1=0-11",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-English.pdf",
+      "notebook_book_id": "17a33630-09ed-48ab-bcbb-6b4ed942dea2",
+      "notebook_chunks": 95
     },
     {
       "id": "cbse-10-social",
@@ -716,7 +798,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?jess3=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Social_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Social_Science.pdf",
+      "notebook_book_id": "fab87a91-7cfb-4701-ac0a-a2f5dba07f5d",
+      "notebook_chunks": 107
     },
     {
       "id": "cbse-10-hindi",
@@ -728,7 +812,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?jhks1=0-17",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Hindi.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-10-Hindi.pdf",
+      "notebook_book_id": "3a86c570-4ca2-4c3e-b6a3-aa637bce07c0",
+      "notebook_chunks": 58
     },
     {
       "id": "cbse-10-sanskrit",
@@ -762,7 +848,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kehb1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-English.pdf",
+      "notebook_book_id": "f5dc2211-5421-4346-9a83-6049ece08c9f",
+      "notebook_chunks": 65
     },
     {
       "id": "cbse-11-math",
@@ -774,7 +862,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kemh1=0-16",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Mathematics.pdf",
+      "notebook_book_id": "200a60f2-9e07-4c7c-b30c-1dde7c899a09",
+      "notebook_chunks": 248
     },
     {
       "id": "cbse-11-phy",
@@ -786,7 +876,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?keph1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Physics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Physics.pdf",
+      "notebook_book_id": "04ede533-b5a0-4422-9117-0fcd3e42defb",
+      "notebook_chunks": 21
     },
     {
       "id": "cbse-11-chem",
@@ -798,7 +890,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kech1=0-7",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Chemistry.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Chemistry.pdf",
+      "notebook_book_id": "c258a591-d7f4-429a-aad7-df7697f0ed85",
+      "notebook_chunks": 270
     },
     {
       "id": "cbse-11-bio",
@@ -810,7 +904,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kebo1=0-22",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Biology.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Biology.pdf",
+      "notebook_book_id": "a9d32a30-80e0-4dd6-8ec9-ca19b269502d",
+      "notebook_chunks": 9
     },
     {
       "id": "cbse-11-cs",
@@ -822,7 +918,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kecs1=0-11",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Computer_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Computer_Science.pdf",
+      "notebook_book_id": "e6350269-32b9-4e2d-a157-fee8c1b006a0",
+      "notebook_chunks": 158
     },
     {
       "id": "cbse-11-acc",
@@ -834,7 +932,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?keac1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Accountancy.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Accountancy.pdf",
+      "notebook_book_id": "b9f41d2f-2897-4be4-ab78-a3c5915dea5a",
+      "notebook_chunks": 166
     },
     {
       "id": "cbse-11-bst",
@@ -846,7 +946,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kebs1=0-11",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Business_Studies.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Business_Studies.pdf",
+      "notebook_book_id": "92dac628-202d-4908-a3d0-fae955352632",
+      "notebook_chunks": 235
     },
     {
       "id": "cbse-11-eco",
@@ -858,7 +960,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?keec1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Economics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Economics.pdf",
+      "notebook_book_id": "692e0b59-a62e-440d-9ef8-c5767b6e648d",
+      "notebook_chunks": 124
     },
     {
       "id": "cbse-11-hist",
@@ -870,7 +974,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kehs1=0-11",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-History.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-History.pdf",
+      "notebook_book_id": "b2dd611c-0336-44d6-9cc7-43a3532f9616",
+      "notebook_chunks": 149
     },
     {
       "id": "cbse-11-geo",
@@ -882,7 +988,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kegy1=0-15",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Geography.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Geography.pdf",
+      "notebook_book_id": "337b2b8c-0eea-467b-8326-8f529efe8068",
+      "notebook_chunks": 64
     },
     {
       "id": "cbse-11-pol",
@@ -894,7 +1002,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?keps1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Political_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Political_Science.pdf",
+      "notebook_book_id": "bb0f70c2-8118-4f17-9818-8da394e35bf0",
+      "notebook_chunks": 97
     },
     {
       "id": "cbse-11-psy",
@@ -906,7 +1016,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?kepy1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Psychology.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-11-Psychology.pdf",
+      "notebook_book_id": "e6b35231-9918-4bcd-89e3-c43c9e12a4d9",
+      "notebook_chunks": 182
     },
     {
       "id": "cbse-12-eng",
@@ -918,7 +1030,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lefl1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-English.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-English.pdf",
+      "notebook_book_id": "4a987038-f8a3-4cd5-8072-0e2ca4f16292",
+      "notebook_chunks": 71
     },
     {
       "id": "cbse-12-math",
@@ -930,7 +1044,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lemh1=0-6",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Mathematics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Mathematics.pdf",
+      "notebook_book_id": "b0cea56d-906d-45e0-8f28-cc66df380775",
+      "notebook_chunks": 159
     },
     {
       "id": "cbse-12-phy",
@@ -942,7 +1058,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?leph1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Physics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Physics.pdf",
+      "notebook_book_id": "ccc063c0-4718-4fdf-b523-7aaa9e447d94",
+      "notebook_chunks": 208
     },
     {
       "id": "cbse-12-chem",
@@ -954,7 +1072,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lech1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Chemistry.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Chemistry.pdf",
+      "notebook_book_id": "5e6b489d-71f1-4413-90cc-696f8177eb50",
+      "notebook_chunks": 152
     },
     {
       "id": "cbse-12-bio-part-1",
@@ -966,19 +1086,37 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_1.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_1.pdf",
+      "ai_unavailable": true,
+      "ai_unavailable_reason": "Pending re-processing (large PDF)"
     },
     {
-      "id": "cbse-12-bio-part-2",
+      "id": "cbse-12-bio-part-2a",
       "board": "CBSE",
       "class": "12",
-      "subject": "Biology Part 2",
-      "title": "Biology Part 2 — Class 12",
+      "subject": "Biology Part 2A",
+      "title": "Biology Part 2A — Class 12",
       "publisher": "NCERT",
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_2.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_2A.pdf",
+      "ai_unavailable": true,
+      "ai_unavailable_reason": "Pending re-processing (large PDF)"
+    },
+    {
+      "id": "cbse-12-bio-part-2b",
+      "board": "CBSE",
+      "class": "12",
+      "subject": "Biology Part 2B",
+      "title": "Biology Part 2B — Class 12",
+      "publisher": "NCERT",
+      "year": "2024-25",
+      "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
+      "type": "official",
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_2B.pdf",
+      "ai_unavailable": true,
+      "ai_unavailable_reason": "Pending re-processing (large PDF)"
     },
     {
       "id": "cbse-12-bio-part-3",
@@ -990,7 +1128,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_3.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_3.pdf",
+      "notebook_book_id": "8e8002b3-bfab-4dc8-b086-084d26de7a5b",
+      "notebook_chunks": 57
     },
     {
       "id": "cbse-12-bio-part-4",
@@ -1002,7 +1142,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_4.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_4.pdf",
+      "notebook_book_id": "a79701aa-ae85-4015-bd26-5192362a5a8b",
+      "notebook_chunks": 82
     },
     {
       "id": "cbse-12-cs",
@@ -1014,7 +1156,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lecs1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Computer_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Computer_Science.pdf",
+      "notebook_book_id": "bcdf565b-ae44-4220-a462-989955448f04",
+      "notebook_chunks": 164
     },
     {
       "id": "cbse-12-acc",
@@ -1026,7 +1170,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?leac1=0-5",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Accountancy.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Accountancy.pdf",
+      "notebook_book_id": "79bf6a1d-08cd-4c66-b5d5-50ea07d0e4b6",
+      "notebook_chunks": 123
     },
     {
       "id": "cbse-12-bst",
@@ -1038,7 +1184,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebs1=0-8",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Business_Studies.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Business_Studies.pdf",
+      "notebook_book_id": "6d461652-57a6-4322-ba9c-d73f4f7e991b",
+      "notebook_chunks": 162
     },
     {
       "id": "cbse-12-eco",
@@ -1050,7 +1198,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?leec1=0-6",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Economics.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Economics.pdf",
+      "notebook_book_id": "00eb6f10-aae6-41eb-a76b-b97d3aba5e63",
+      "notebook_chunks": 113
     },
     {
       "id": "cbse-12-hist",
@@ -1062,7 +1212,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lehs1=0-4",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-History.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-History.pdf",
+      "notebook_book_id": "655513a0-9a12-4170-b0a2-e6084baa6fc7",
+      "notebook_chunks": 90
     },
     {
       "id": "cbse-12-geo",
@@ -1074,7 +1226,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?legy1=0-10",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Geography.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Geography.pdf",
+      "notebook_book_id": "f30d6f6f-1a77-4c5a-b473-b15cf715f2ab",
+      "notebook_chunks": 70
     },
     {
       "id": "cbse-12-pol",
@@ -1086,7 +1240,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?leps1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Political_Science.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Political_Science.pdf",
+      "notebook_book_id": "9528a274-d435-4a44-9056-59b1ea7068b2",
+      "notebook_chunks": 98
     },
     {
       "id": "cbse-12-psy",
@@ -1098,7 +1254,9 @@
       "year": "2024-25",
       "viewerUrl": "https://ncert.nic.in/textbook.php?lepy1=0-9",
       "type": "official",
-      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Psychology.pdf"
+      "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Psychology.pdf",
+      "notebook_book_id": "18690a26-64f6-42bf-9062-f531193ad503",
+      "notebook_chunks": 156
     }
   ],
   "questionPapers": [
