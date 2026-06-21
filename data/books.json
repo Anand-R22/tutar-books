@@ -11,7 +11,7 @@
     "lastSplit": "2026-06-20T06:47:17.467Z",
     "lastScan": "2026-06-20T06:47:39.666Z",
     "lastNotebookSync": "2026-06-19T07:08:37.011Z",
-    "lastNotebookReconcile": "2026-06-19T07:43:53.422Z",
+    "lastNotebookReconcile": "2026-06-21T08:39:11.058Z",
     "lastAiUnavailableMark": "2026-06-20T14:23:14.681Z"
   },
   "boards": [
@@ -1087,8 +1087,7 @@
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
       "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_1.pdf",
-      "ai_unavailable": true,
-      "ai_unavailable_reason": "Pending re-processing (large PDF)"
+      "notebook_book_id": "4a51b9a9-1d8b-48f3-99e0-a84a1b53c7d8"
     },
     {
       "id": "cbse-12-bio-part-2a",
@@ -1101,8 +1100,7 @@
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
       "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_2A.pdf",
-      "ai_unavailable": true,
-      "ai_unavailable_reason": "Pending re-processing (large PDF)"
+      "notebook_book_id": "013dafeb-be28-45ea-a6ae-10ac2614a89b"
     },
     {
       "id": "cbse-12-bio-part-2b",
@@ -1115,8 +1113,7 @@
       "viewerUrl": "https://ncert.nic.in/textbook.php?lebo1=0-16",
       "type": "official",
       "file_url": "https://github.com/Anand-R22/tutar-books/releases/download/v1.0-textbooks/CBSE-Class-12-Biology_Part_2B.pdf",
-      "ai_unavailable": true,
-      "ai_unavailable_reason": "Pending re-processing (large PDF)"
+      "notebook_book_id": "bbb4287d-e38c-41eb-b4b2-b29a0a734672"
     },
     {
       "id": "cbse-12-bio-part-3",
