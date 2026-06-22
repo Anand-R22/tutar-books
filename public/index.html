@@ -11,6 +11,11 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <!-- KaTeX — renders LaTeX math expressions like $x^2$ or $$\frac{a}{b}$$ from AI output -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -152,13 +157,125 @@
           <a id="viewerDownload" href="#" download class="viewer-btn">Download</a>
         </div>
       </header>
-      <div class="viewer-stage">
-        <div id="viewerLoading" class="viewer-loading">
-          <div class="viewer-spinner"></div>
-          <p class="viewer-loading-text">Loading PDF from cloud…</p>
-          <p class="viewer-loading-hint">Big books may take 10-30 seconds first time. After that they're fast.</p>
+
+      <!-- Split screen: PDF on left, AI panel on right -->
+      <div class="viewer-split">
+
+        <!-- LEFT: PDF viewer -->
+        <div class="viewer-stage">
+          <div id="viewerLoading" class="viewer-loading">
+            <div class="viewer-spinner"></div>
+            <p class="viewer-loading-text">Loading PDF from cloud…</p>
+            <p class="viewer-loading-hint">Big books may take 10-30 seconds first time. After that they're fast.</p>
+          </div>
+          <iframe id="viewerFrame" class="viewer-frame-inline" title="PDF viewer"></iframe>
         </div>
-        <iframe id="viewerFrame" class="viewer-frame-inline" title="PDF viewer"></iframe>
+
+        <!-- RIGHT: AI Assistant panel -->
+        <aside id="aiPanel" class="ai-panel">
+          <header class="ai-panel-header">
+            <h3>
+              <span class="ai-sparkle">✨</span>
+              AI Lesson Assistant
+            </h3>
+            <p class="ai-panel-sub">Generate study material from this textbook</p>
+          </header>
+
+          <!-- "AI not available" banner — shown for books without notebook_book_id -->
+          <div id="aiUnavailable" class="ai-unavailable" style="display:none">
+            <div class="ai-unavailable-icon">⏳</div>
+            <h4>AI features coming soon</h4>
+            <p>This textbook is being prepared for AI integration. You can still read the PDF on the left.</p>
+          </div>
+
+          <!-- Topic input + generate -->
+          <div id="aiInput" class="ai-input-section">
+            <label class="ai-input-label" for="aiTopic">What topic do you want to teach?</label>
+            <input type="text"
+                   id="aiTopic"
+                   class="ai-input"
+                   placeholder="e.g. Pythagoras theorem, Photosynthesis, French Revolution"
+                   autocomplete="off" />
+            <button type="button" id="aiGenerateBtn" class="ai-generate-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              Generate Lesson Material
+            </button>
+
+            <!-- Suggested topics — populated from Notebook's suggested_topics per book -->
+            <div id="aiSuggestions" class="ai-suggestions" style="display:none">
+              <p class="ai-suggestions-label">Or try one of these topics:</p>
+              <div id="aiSuggestionChips" class="ai-suggestion-chips"></div>
+            </div>
+
+            <p class="ai-input-hint">AI will create a summary, lesson plan, MCQs, videos, images and 3D models.</p>
+          </div>
+
+          <!-- Loading state during generation -->
+          <div id="aiLoading" class="ai-loading" style="display:none">
+            <div class="ai-loading-spinner"></div>
+            <p class="ai-loading-text" id="aiLoadingText">Searching the textbook…</p>
+            <p class="ai-loading-hint">This usually takes 15-30 seconds.</p>
+          </div>
+
+          <!-- Error state -->
+          <div id="aiError" class="ai-error" style="display:none">
+            <div class="ai-error-icon">⚠️</div>
+            <p id="aiErrorText" class="ai-error-text"></p>
+            <button type="button" id="aiRetryBtn" class="ai-retry-btn">Try again</button>
+          </div>
+
+          <!-- Results — one scrollable list of sections -->
+          <div id="aiResults" class="ai-results" style="display:none">
+
+            <section id="aiSummarySection" class="ai-section">
+              <h4 class="ai-section-title">📖 Summary</h4>
+              <div id="aiSummaryBody" class="ai-section-body"></div>
+            </section>
+
+            <section id="aiLessonPlanSection" class="ai-section">
+              <h4 class="ai-section-title">📝 Lesson Plan</h4>
+              <div id="aiLessonPlanBody" class="ai-section-body"></div>
+            </section>
+
+            <section id="aiVideosSection" class="ai-section">
+              <h4 class="ai-section-title">
+                <svg class="ai-icon-youtube" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z" fill="#FF0000"/>
+                  <path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#FFFFFF"/>
+                </svg>
+                Videos
+              </h4>
+              <div id="aiVideosBody" class="ai-section-body ai-cards"></div>
+            </section>
+
+            <section id="aiImagesSection" class="ai-section">
+              <h4 class="ai-section-title">🖼️ Images</h4>
+              <div id="aiImagesBody" class="ai-section-body ai-image-grid"></div>
+            </section>
+
+            <section id="aiMcqsSection" class="ai-section">
+              <h4 class="ai-section-title">❓ Practice Questions</h4>
+              <div id="aiMcqsBody" class="ai-section-body"></div>
+            </section>
+
+            <section id="aiModelsSection" class="ai-section">
+              <h4 class="ai-section-title">🎲 3D Models</h4>
+              <div id="aiModelsBody" class="ai-section-body ai-cards"></div>
+            </section>
+
+            <section id="aiSourcesSection" class="ai-section ai-sources">
+              <h4 class="ai-section-title">📎 Sources from textbook</h4>
+              <div id="aiSourcesBody" class="ai-section-body"></div>
+            </section>
+
+            <button type="button" id="aiNewTopicBtn" class="ai-new-topic-btn">
+              ← Generate another topic
+            </button>
+          </div>
+
+        </aside>
       </div>
     </section>
   </div>

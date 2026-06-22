@@ -345,6 +345,145 @@ app.delete("/api/uploads/:id", requireAuth, async (req, res) => {
   res.json({ deleted: true });
 });
 
+// ═══════════════════════════════════════════════════════
+// AI BRIDGE — POST /api/ai-generate
+//
+// Books frontend calls this when a teacher clicks "Generate" in the
+// AI panel. We forward the request to TutAR Notebook using the
+// system account's JWT (so Notebook sees one consistent user).
+//
+// Body: { bookId, topic, className, subject }
+// ═══════════════════════════════════════════════════════
+const {
+  NOTEBOOK_URL,
+  NOTEBOOK_SYSTEM_EMAIL,
+  NOTEBOOK_SYSTEM_PASSWORD,
+} = process.env;
+
+// Cache the Notebook session so we don't sign in on every request.
+// JWT lasts 1 hour; we refresh after 50 min to be safe.
+let notebookSession = null;
+let notebookSessionFetchedAt = 0;
+const NOTEBOOK_SESSION_TTL_MS = 50 * 60 * 1000;
+
+async function getNotebookToken() {
+  if (notebookSession && (Date.now() - notebookSessionFetchedAt) < NOTEBOOK_SESSION_TTL_MS) {
+    return notebookSession.access_token;
+  }
+  if (!NOTEBOOK_URL || !NOTEBOOK_SYSTEM_EMAIL || !NOTEBOOK_SYSTEM_PASSWORD) {
+    throw new Error("Notebook system credentials not configured in .env");
+  }
+
+  // Get Notebook's Supabase config (their URL + anon key)
+  const cfgRes = await fetch(`${NOTEBOOK_URL}/api/config`);
+  if (!cfgRes.ok) throw new Error("Couldn't reach Notebook");
+  const cfg = await cfgRes.json();
+
+  // Sign in as the system user
+  const sb = createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+  const { data, error } = await sb.auth.signInWithPassword({
+    email: NOTEBOOK_SYSTEM_EMAIL,
+    password: NOTEBOOK_SYSTEM_PASSWORD,
+  });
+  if (error) throw new Error("Notebook sign-in failed: " + error.message);
+
+  notebookSession = data.session;
+  notebookSessionFetchedAt = Date.now();
+  return data.session.access_token;
+}
+
+// GET /api/ai-suggestions?bookId=...
+// Returns the suggested_topics that Notebook generated for that book.
+// Lightweight: just fetches Notebook's /api/books list and finds the matching id.
+//
+// Cached in memory for 10 minutes to avoid pounding Notebook on every textbook open.
+const suggestionsCache = new Map();  // bookId -> { topics, fetchedAt }
+const SUGGESTIONS_TTL_MS = 10 * 60 * 1000;
+
+app.get("/api/ai-suggestions", requireAuth, async (req, res) => {
+  const { bookId } = req.query;
+  if (!bookId) return res.status(400).json({ error: "bookId is required" });
+
+  // Cache hit?
+  const cached = suggestionsCache.get(bookId);
+  if (cached && (Date.now() - cached.fetchedAt) < SUGGESTIONS_TTL_MS) {
+    return res.json({ topics: cached.topics });
+  }
+
+  try {
+    const token = await getNotebookToken();
+    const nbRes = await fetch(`${NOTEBOOK_URL}/api/books`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (!nbRes.ok) {
+      return res.status(nbRes.status).json({ error: "Couldn't fetch Notebook books list" });
+    }
+    const data = await nbRes.json();
+    const books = Array.isArray(data) ? data : (data.books || []);
+    const match = books.find((b) => b.id === bookId);
+    const topics = match?.suggested_topics || [];
+
+    suggestionsCache.set(bookId, { topics, fetchedAt: Date.now() });
+    res.json({ topics });
+  } catch (err) {
+    console.error("[ai-suggestions] error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
+app.post("/api/ai-generate", requireAuth, async (req, res) => {
+  const { bookId, topic, className, subject } = req.body || {};
+
+  if (!bookId || !topic) {
+    return res.status(400).json({ error: "bookId and topic are required" });
+  }
+
+  try {
+    const token = await getNotebookToken();
+
+    // Forward to Notebook's /api/generate
+    const nbRes = await fetch(`${NOTEBOOK_URL}/api/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ bookId, topic, className, subject }),
+    });
+
+    if (!nbRes.ok) {
+      // If session expired, retry once with a fresh login
+      if (nbRes.status === 401) {
+        notebookSession = null;  // force refresh
+        const freshToken = await getNotebookToken();
+        const retry = await fetch(`${NOTEBOOK_URL}/api/generate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${freshToken}`,
+          },
+          body: JSON.stringify({ bookId, topic, className, subject }),
+        });
+        if (!retry.ok) {
+          const txt = await retry.text();
+          return res.status(retry.status).json({ error: "Notebook error after retry", detail: txt.slice(0, 300) });
+        }
+        const data = await retry.json();
+        return res.json(data);
+      }
+
+      const txt = await nbRes.text();
+      return res.status(nbRes.status).json({ error: "Notebook returned an error", detail: txt.slice(0, 300) });
+    }
+
+    const data = await nbRes.json();
+    res.json(data);
+  } catch (err) {
+    console.error("[ai-generate] error:", err);
+    res.status(500).json({ error: err.message || "Internal error" });
+  }
+});
+
 // ───── Start server ─────
 app.listen(PORT, () => {
   console.log(`

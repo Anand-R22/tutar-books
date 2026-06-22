@@ -533,13 +533,19 @@ function openViewer(item, kind) {
   $("#viewerOpenNew").href = pdfUrl;       // Direct GitHub link
   $("#viewerDownload").href = pdfUrl;      // Direct GitHub link
 
+  // Set up the AI panel for this textbook
+  setupAiPanel(item, kind);
+
+  // Reset both scrolls BEFORE locking the body
+  window.scrollTo({ top: 0, behavior: "instant" });
+
   // Hide library, show viewer
   hide($(".filter-bar"));
   hide($(".results-area"));
   show($("#viewerSection"));
 
-  // Scroll to top
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  // Lock body scroll so warm-paper background doesn't show below viewer
+  document.body.style.overflow = "hidden";
 }
 
 function closeViewer() {
@@ -547,7 +553,550 @@ function closeViewer() {
   show($(".filter-bar"));
   show($(".results-area"));
   $("#viewerFrame").src = "about:blank";
+  document.body.style.overflow = "";   // restore scrolling
+  resetAiPanel();
 }
+
+// ═══════════════════════════════════════════════════════
+// AI ASSISTANT PANEL
+// ═══════════════════════════════════════════════════════
+
+let currentAiContext = null;  // { item, kind } — what the panel is currently bound to
+
+function setupAiPanel(item, kind) {
+  currentAiContext = { item, kind };
+
+  // Show the AI panel only for library textbooks. Question papers and user
+  // uploads aren't tied to a Notebook book_id.
+  const isLibraryBook = kind === "library" || kind === "textbook";
+  const hasAiIntegration = !!item.notebook_book_id && !item.ai_unavailable;
+
+  // Reset all sub-panels to baseline
+  hide($("#aiLoading"));
+  hide($("#aiError"));
+  hide($("#aiResults"));
+  hide($("#aiUnavailable"));
+  hide($("#aiSuggestions"));
+  show($("#aiInput"));
+  $("#aiTopic").value = "";
+  $("#aiSuggestionChips").innerHTML = "";
+
+  if (!isLibraryBook) {
+    // Hide the whole AI panel for non-textbooks
+    $("#aiPanel").style.display = "none";
+    return;
+  }
+
+  $("#aiPanel").style.display = "flex";
+
+  if (!hasAiIntegration) {
+    // Show "AI coming soon" banner instead of input
+    hide($("#aiInput"));
+    show($("#aiUnavailable"));
+    return;
+  }
+
+  // Fetch and render the suggested topics for this book (async, non-blocking)
+  fetchAiSuggestions(item.notebook_book_id);
+}
+
+async function fetchAiSuggestions(bookId) {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const token = session?.access_token;
+    const res = await fetch(`/api/ai-suggestions?bookId=${encodeURIComponent(bookId)}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    if (!res.ok) return;  // Silently no chips
+    const data = await res.json();
+    const topics = Array.isArray(data.topics) ? data.topics : [];
+    if (topics.length === 0) return;
+    renderSuggestionChips(topics);
+  } catch (err) {
+    // Don't show error to user — chips are optional
+    console.warn("Couldn't fetch suggestions:", err);
+  }
+}
+
+function renderSuggestionChips(topics) {
+  const container = $("#aiSuggestionChips");
+  container.innerHTML = topics.map((t) =>
+    `<button type="button" class="ai-chip" data-topic="${escapeAttr(t)}">${escapeText(t)}</button>`
+  ).join("");
+  show($("#aiSuggestions"));
+
+  // Wire each chip
+  container.querySelectorAll(".ai-chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      const topic = chip.dataset.topic;
+      $("#aiTopic").value = topic;
+      $("#aiTopic").focus();
+      // Auto-trigger generate so it feels snappy
+      generateAiContent();
+    });
+  });
+}
+
+function resetAiPanel() {
+  currentAiContext = null;
+  $("#aiTopic").value = "";
+  hide($("#aiLoading"));
+  hide($("#aiError"));
+  hide($("#aiResults"));
+}
+
+async function generateAiContent() {
+  if (!currentAiContext) return;
+  const { item } = currentAiContext;
+  const topic = $("#aiTopic").value.trim();
+
+  if (!topic) {
+    $("#aiTopic").focus();
+    toast("Please enter a topic first", "default");
+    return;
+  }
+  if (!item.notebook_book_id) {
+    return;  // shouldn't happen — panel would have shown "unavailable" banner
+  }
+
+  // ── Browser-side cache check (instant for previously-asked topics) ──
+  const localKey = `tutar:cache:${item.notebook_book_id}:${topic.toLowerCase()}`;
+  try {
+    const cachedRaw = localStorage.getItem(localKey);
+    if (cachedRaw) {
+      const cached = JSON.parse(cachedRaw);
+      if (cached?.payload) {
+        hide($("#aiInput"));
+        hide($("#aiError"));
+        hide($("#aiLoading"));
+        renderAiResults({ ...cached.payload, _cached: true });
+        saveRecentTopic(item.notebook_book_id, topic);
+        return;
+      }
+    }
+  } catch {}
+
+  // Show loading, hide everything else
+  hide($("#aiInput"));
+  hide($("#aiError"));
+  hide($("#aiResults"));
+  show($("#aiLoading"));
+  cycleLoadingText();
+
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    const token = session?.access_token;
+
+    const res = await fetch("/api/ai-generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        bookId: item.notebook_book_id,
+        topic,
+        className: `Class ${item.class}`,
+        subject: item.subject,
+      }),
+    });
+
+    if (!res.ok) {
+      let msg = `Request failed (${res.status})`;
+      try { const j = await res.json(); msg = j.error || msg; } catch {}
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    stopLoadingText();
+    renderAiResults(data);
+
+    // Save to browser cache for instant re-open
+    try {
+      localStorage.setItem(localKey, JSON.stringify({
+        payload: data,
+        cachedAt: Date.now(),
+      }));
+    } catch {}
+    saveRecentTopic(item.notebook_book_id, topic);
+
+  } catch (err) {
+    stopLoadingText();
+    hide($("#aiLoading"));
+    show($("#aiError"));
+    $("#aiErrorText").textContent = err.message || "Something went wrong while generating content.";
+  }
+}
+
+// Track the last 5 generated topics per book (for the Recent Topics panel)
+function saveRecentTopic(bookId, topic) {
+  try {
+    const key = `tutar:recent:${bookId}`;
+    const list = JSON.parse(localStorage.getItem(key) || "[]");
+    // Remove if already there, prepend, cap at 5
+    const filtered = list.filter((t) => t.toLowerCase() !== topic.toLowerCase());
+    filtered.unshift(topic);
+    localStorage.setItem(key, JSON.stringify(filtered.slice(0, 5)));
+  } catch {}
+}
+
+function getRecentTopics(bookId) {
+  try {
+    return JSON.parse(localStorage.getItem(`tutar:recent:${bookId}`) || "[]");
+  } catch { return []; }
+}
+
+// Cycle through friendly loading messages
+let loadingTimer = null;
+function cycleLoadingText() {
+  const messages = [
+    "Searching the textbook…",
+    "Finding the right chapter…",
+    "Composing the summary…",
+    "Looking up videos…",
+    "Generating practice questions…",
+    "Almost done…",
+  ];
+  let i = 0;
+  $("#aiLoadingText").textContent = messages[0];
+  loadingTimer = setInterval(() => {
+    i = (i + 1) % messages.length;
+    $("#aiLoadingText").textContent = messages[i];
+  }, 4000);
+}
+function stopLoadingText() {
+  if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
+}
+
+function renderAiResults(data) {
+  hide($("#aiLoading"));
+  hide($("#aiInput"));
+  hide($("#aiError"));
+  show($("#aiResults"));
+
+  // Notebook returns: content, lessonPlan, mcqs, models3D, images, videos, sources
+  renderSection("#aiSummarySection", "#aiSummaryBody", data.content, renderMarkdownish);
+  renderSection("#aiLessonPlanSection", "#aiLessonPlanBody", data.lessonPlan, renderMarkdownish);
+  renderSection("#aiVideosSection", "#aiVideosBody", data.videos, renderVideos);
+  renderSection("#aiImagesSection", "#aiImagesBody", data.images, renderImages);
+  renderSection("#aiMcqsSection", "#aiMcqsBody", data.mcqs, renderMcqs);
+  renderSection("#aiModelsSection", "#aiModelsBody", data.models3D, renderModels);
+  renderSection("#aiSourcesSection", "#aiSourcesBody", data.sources, renderSources);
+
+  // After everything is in the DOM, ask KaTeX to find and render any LaTeX math
+  // expressions like $x^2$ (inline) or $$x = \frac{-b}{2a}$$ (display).
+  renderMathInResults();
+
+  // Scroll the AI PANEL only (not the whole page) up to its results section.
+  // Using scrollIntoView() scrolls the body, which causes empty space below
+  // the locked viewport.
+  const panel = $("#aiPanel");
+  if (panel) panel.scrollTop = 0;
+}
+
+// Run KaTeX over the entire results container.
+// Safe to call multiple times — KaTeX skips already-rendered math.
+function renderMathInResults() {
+  if (typeof renderMathInElement !== "function") {
+    // Library hasn't loaded yet (still streaming from CDN). Try again in a moment.
+    setTimeout(renderMathInResults, 200);
+    return;
+  }
+  try {
+    renderMathInElement($("#aiResults"), {
+      // Common delimiters Gemini uses:
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$",  right: "$",  display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true },
+      ],
+      // Don't crash on bad LaTeX — just leave the text alone
+      throwOnError: false,
+      // Don't try to render math inside code/pre blocks
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      // Match common LaTeX commands Gemini outputs without escaping
+      strict: false,
+    });
+  } catch (err) {
+    console.warn("KaTeX render failed:", err);
+  }
+}
+
+// Show/hide a section based on whether it has content
+function renderSection(sectionSelector, bodySelector, value, renderer) {
+  const hasContent = value && (typeof value === "string" ? value.trim() : value.length > 0);
+  if (!hasContent) {
+    hide($(sectionSelector));
+    return;
+  }
+  show($(sectionSelector));
+  $(bodySelector).innerHTML = "";
+  renderer($(bodySelector), value);
+}
+
+// Lightweight markdown-ish renderer (paragraphs, bullets, bold) — no eval, safe
+function renderMarkdownish(el, text) {
+  const escape = (s) => s
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // Split into blocks separated by blank lines
+  const blocks = escape(text).split(/\n\s*\n+/);
+
+  const html = blocks.map((block) => {
+    const trimmed = block.trim();
+    if (!trimmed) return "";
+
+    // Horizontal rule: --- or *** alone on a line
+    if (/^[-*_]{3,}$/.test(trimmed)) {
+      return '<hr class="ai-hr" />';
+    }
+
+    // Heading: # H1, ## H2, ### H3, #### H4
+    const headingMatch = trimmed.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch && !trimmed.includes("\n")) {
+      const level = Math.min(headingMatch[1].length, 6);
+      return `<h${level} class="ai-h${level}">${inlineMd(headingMatch[2])}</h${level}>`;
+    }
+
+    // List: lines starting with * - or numbered
+    const lines = trimmed.split("\n");
+    const isList = lines.every((l) => /^\s*[*\-]\s+/.test(l) || /^\s*\d+\.\s+/.test(l));
+    if (isList) {
+      const ordered = /^\s*\d+\./.test(lines[0]);
+      const items = lines.map((l) =>
+        `<li>${inlineMd(l.replace(/^\s*[*\-]\s+/, "").replace(/^\s*\d+\.\s+/, ""))}</li>`
+      ).join("");
+      return ordered ? `<ol>${items}</ol>` : `<ul>${items}</ul>`;
+    }
+
+    // Mixed block — could be a paragraph with a heading inline at start
+    // (e.g. "#### 1. Triangular Numbers\nTriangular numbers are...")
+    // Process each line so headings inside a "block" still render
+    let out = "";
+    let inList = false;
+    let listType = null;
+    for (const rawLine of lines) {
+      const line = rawLine.trim();
+
+      // Heading line?
+      const h = line.match(/^(#{1,6})\s+(.+)$/);
+      if (h) {
+        if (inList) { out += listType === "ol" ? "</ol>" : "</ul>"; inList = false; }
+        const lvl = Math.min(h[1].length, 6);
+        out += `<h${lvl} class="ai-h${lvl}">${inlineMd(h[2])}</h${lvl}>`;
+        continue;
+      }
+
+      // List item?
+      const ul = line.match(/^[*\-]\s+(.+)$/);
+      const ol = line.match(/^\d+\.\s+(.+)$/);
+      if (ul || ol) {
+        const wantType = ul ? "ul" : "ol";
+        if (!inList) { out += `<${wantType}>`; inList = true; listType = wantType; }
+        else if (listType !== wantType) {
+          out += listType === "ol" ? "</ol>" : "</ul>";
+          out += `<${wantType}>`;
+          listType = wantType;
+        }
+        out += `<li>${inlineMd((ul || ol)[1])}</li>`;
+        continue;
+      }
+
+      // Horizontal rule inside block?
+      if (/^[-*_]{3,}$/.test(line)) {
+        if (inList) { out += listType === "ol" ? "</ol>" : "</ul>"; inList = false; }
+        out += '<hr class="ai-hr" />';
+        continue;
+      }
+
+      // Plain prose line — close any open list, then start/continue paragraph
+      if (inList) { out += listType === "ol" ? "</ol>" : "</ul>"; inList = false; }
+      if (line) {
+        out += `<p>${inlineMd(line)}</p>`;
+      }
+    }
+    if (inList) out += listType === "ol" ? "</ol>" : "</ul>";
+    return out;
+  }).join("");
+
+  el.innerHTML = html;
+}
+
+// Inline markdown — bold, italic. Math (`$...$`) is left as-is for KaTeX to handle later.
+function inlineMd(s) {
+  return s
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/__(.+?)__/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>");
+}
+
+function renderVideos(el, videos) {
+  if (!Array.isArray(videos)) return;
+  // YouTube-style card: red logo on the left, title + channel on the right
+  const ytLogo = `
+    <svg class="ai-card-yt-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z" fill="#FF0000"/>
+      <path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#FFFFFF"/>
+    </svg>`;
+  el.innerHTML = videos.map((v) => `
+    <a class="ai-card ai-video-card" href="${escapeAttr(v.url || v.link || "#")}" target="_blank" rel="noopener noreferrer">
+      ${ytLogo}
+      <div class="ai-card-content">
+        <div class="ai-card-title">${escapeText(v.title || "Video")}</div>
+        <div class="ai-card-meta">${escapeText(v.channel || v.source || "YouTube")}</div>
+      </div>
+    </a>
+  `).join("");
+}
+
+function renderImages(el, images) {
+  if (!Array.isArray(images)) return;
+  el.innerHTML = images.map((img) => `
+    <a class="ai-image-card" href="${escapeAttr(img.url || img.link || "#")}" target="_blank" rel="noopener noreferrer">
+      <img src="${escapeAttr(img.thumbnail || img.url || img.link)}"
+           alt="${escapeAttr(img.title || "image")}"
+           loading="lazy" />
+    </a>
+  `).join("");
+}
+
+function renderMcqs(el, mcqs) {
+  if (!Array.isArray(mcqs) || mcqs.length === 0) {
+    el.innerHTML = '<p style="color: var(--ink-faded); font-size: 13px;">No practice questions could be generated for this topic.</p>';
+    return;
+  }
+
+  el.innerHTML = mcqs.map((q, qIdx) => {
+    const correctIdx = typeof q.correctIndex === "number" ? q.correctIndex : -1;
+    const opts = (q.options || []).map((opt, oi) => {
+      const letter = String.fromCharCode(65 + oi);
+      return `
+        <button type="button"
+                class="ai-mcq-option"
+                data-q="${qIdx}"
+                data-opt="${oi}"
+                data-correct="${correctIdx}">
+          <span class="ai-mcq-letter">${letter}.</span>
+          <span class="ai-mcq-text">${escapeText(opt)}</span>
+          <span class="ai-mcq-icon"></span>
+        </button>`;
+    }).join("");
+
+    const explanation = q.explanation ? escapeText(q.explanation) : "";
+
+    return `
+      <div class="ai-mcq" data-q="${qIdx}">
+        <p class="ai-mcq-question"><strong>Q${qIdx + 1}.</strong> ${escapeText(q.question || "")}</p>
+        <div class="ai-mcq-options">${opts}</div>
+        <div class="ai-mcq-feedback" id="ai-mcq-fb-${qIdx}" style="display:none">
+          <div class="ai-mcq-fb-text"></div>
+          ${explanation ? `<div class="ai-mcq-fb-explanation">${explanation}</div>` : ""}
+        </div>
+      </div>`;
+  }).join("");
+
+  // Wire up click handlers for each option
+  el.querySelectorAll(".ai-mcq-option").forEach((btn) => {
+    btn.addEventListener("click", handleMcqClick);
+  });
+}
+
+function handleMcqClick(e) {
+  const btn = e.currentTarget;
+  const qIdx = btn.dataset.q;
+  const chosen = parseInt(btn.dataset.opt, 10);
+  const correct = parseInt(btn.dataset.correct, 10);
+  const isCorrect = chosen === correct;
+
+  // Find all options for this question
+  const mcq = btn.closest(".ai-mcq");
+  const allOpts = mcq.querySelectorAll(".ai-mcq-option");
+
+  // Already answered? Don't allow re-clicks.
+  if (mcq.classList.contains("ai-mcq-answered")) return;
+  mcq.classList.add("ai-mcq-answered");
+
+  // Mark each option visually
+  allOpts.forEach((b) => {
+    const oi = parseInt(b.dataset.opt, 10);
+    if (oi === correct) {
+      b.classList.add("ai-mcq-correct");
+    } else if (oi === chosen && !isCorrect) {
+      b.classList.add("ai-mcq-wrong");
+    } else {
+      b.classList.add("ai-mcq-disabled");
+    }
+    b.disabled = true;
+  });
+
+  // Show feedback message
+  const fb = document.getElementById(`ai-mcq-fb-${qIdx}`);
+  if (fb) {
+    const fbText = fb.querySelector(".ai-mcq-fb-text");
+    if (fbText) {
+      fbText.innerHTML = isCorrect
+        ? `<span class="ai-mcq-fb-correct">✓ Correct!</span>`
+        : `<span class="ai-mcq-fb-wrong">✗ Not quite.</span> The correct answer is <strong>${String.fromCharCode(65 + correct)}</strong>.`;
+    }
+    fb.style.display = "block";
+  }
+}
+
+function renderModels(el, models) {
+  if (!Array.isArray(models)) return;
+  el.innerHTML = models.map((m) => `
+    <a class="ai-card" href="${escapeAttr(m.url || m.link || "#")}" target="_blank" rel="noopener noreferrer">
+      <div class="ai-card-title">${escapeText(m.title || m.name || "3D Model")}</div>
+      <div class="ai-card-meta">${escapeText(m.source || "Sketchfab")}</div>
+    </a>
+  `).join("");
+}
+
+function renderSources(el, sources) {
+  if (Array.isArray(sources)) {
+    el.innerHTML = sources.map((s) => {
+      // Notebook returns: { excerptNumber, relevance, preview }
+      if (s && typeof s === "object") {
+        const num = s.excerptNumber ?? "";
+        const rel = typeof s.relevance === "number" ? `${s.relevance}% match` : "";
+        const text = s.preview || s.text || s.chunk || "";
+        return `
+          <div class="ai-source">
+            <div class="ai-source-head">
+              <span class="ai-source-num">Excerpt ${num}</span>
+              ${rel ? `<span class="ai-source-rel">${rel}</span>` : ""}
+            </div>
+            <p class="ai-source-text">${escapeText(text)}</p>
+          </div>`;
+      }
+      return `<div class="ai-source"><p class="ai-source-text">${escapeText(String(s))}</p></div>`;
+    }).join("");
+  } else {
+    renderMarkdownish(el, String(sources));
+  }
+}
+
+function escapeText(s) {
+  return String(s ?? "")
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+function escapeAttr(s) {
+  return escapeText(s).replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+// Wire up buttons
+$("#aiGenerateBtn")?.addEventListener("click", generateAiContent);
+$("#aiRetryBtn")?.addEventListener("click", generateAiContent);
+$("#aiNewTopicBtn")?.addEventListener("click", () => {
+  hide($("#aiResults"));
+  show($("#aiInput"));
+  $("#aiTopic").value = "";
+  $("#aiTopic").focus();
+});
+$("#aiTopic")?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") generateAiContent();
+});
 
 $("#viewerBack").addEventListener("click", closeViewer);
 
