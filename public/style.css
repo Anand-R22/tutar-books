@@ -842,9 +842,16 @@ body:has(#viewerSection:not([style*="display:none"])) {
 .viewer-split {
   flex: 1;
   display: grid;
-  grid-template-columns: 60% 40%;
+  /* PDF gets the full width by default; AI panel is collapsed.
+     When .ai-panel-open is added, the panel slides in to 40%. */
+  grid-template-columns: 1fr 0fr;
   min-height: 0;
   overflow: hidden;
+  transition: grid-template-columns 0.25s ease;
+}
+
+.viewer-split.ai-panel-open {
+  grid-template-columns: 60% 40%;
 }
 
 .viewer-stage {
@@ -1474,13 +1481,13 @@ body:has(#viewerSection:not([style*="display:none"])) {
 
 /* ═══════ Responsive: stack on small screens ═══════ */
 @media (max-width: 1100px) {
-  .viewer-split {
+  .viewer-split.ai-panel-open {
     grid-template-columns: 55% 45%;
   }
 }
 
 @media (max-width: 900px) {
-  .viewer-split {
+  .viewer-split.ai-panel-open {
     grid-template-columns: 1fr;
     grid-template-rows: 60vh 1fr;
     overflow-y: auto;
@@ -1847,4 +1854,173 @@ body:has(#viewerSection:not([style*="display:none"])) {
 .ai-section-body strong {
   font-weight: 600;
   color: #1F2937;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AI ASSISTANT TOGGLE — bottom-right pill on PDF area + X on panel header
+═══════════════════════════════════════════════════════════ */
+
+/* Floating toggle button — bottom-right of PDF area, pill-shaped */
+.ai-toggle-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: #1F2937;
+  border: none;
+  border-radius: 999px;                            /* fully rounded pill */
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4),
+              0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.15s, transform 0.1s, box-shadow 0.2s;
+}
+
+.ai-toggle-btn:hover {
+  background: #374151;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5),
+              0 2px 4px rgba(0, 0, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.ai-toggle-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.ai-toggle-btn svg {
+  flex-shrink: 0;
+  /* Sparkle gets a softer color to let the shimmering label lead */
+  color: #E5E7EB;
+}
+
+/* ─── Text shimmer animation ─────────────────────────────────
+   The label "AI Assistant" gets a rainbow color wash that flows
+   left to right every ~3.5 seconds. Inspired by Google Gemini.
+   Background is still dark — only the text is animated. */
+.ai-toggle-label {
+  background: linear-gradient(
+    90deg,
+    #ffffff 25%,
+    #4285F4 35%,
+    #9B72FF 45%,
+    #D96570 55%,
+    #F2A93B 65%,
+    #ffffff 75%
+  );
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;                              /* fallback */
+  animation: ai-text-shimmer 3.5s linear infinite;
+}
+
+@keyframes ai-text-shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: -100% 50%; }
+}
+
+/* When panel is OPEN — saffron accent shows active state.
+   We also stop the shimmer animation (so "Hide AI" reads clearly). */
+.ai-toggle-btn.ai-toggle-active {
+  background: #B07223;
+  box-shadow: 0 4px 14px rgba(176, 114, 35, 0.5),
+              0 2px 4px rgba(176, 114, 35, 0.3);
+}
+
+.ai-toggle-btn.ai-toggle-active:hover {
+  background: #9A6520;
+  box-shadow: 0 6px 18px rgba(176, 114, 35, 0.6),
+              0 2px 4px rgba(176, 114, 35, 0.4);
+}
+
+/* In active state, the label is solid white again */
+.ai-toggle-btn.ai-toggle-active .ai-toggle-label {
+  background: none;
+  -webkit-text-fill-color: white;
+  color: white;
+  animation: none;
+}
+
+.ai-toggle-btn.ai-toggle-active svg {
+  color: white;
+}
+
+/* Respect user's motion preferences — disable shimmer if they've opted out */
+@media (prefers-reduced-motion: reduce) {
+  .ai-toggle-label {
+    animation: none;
+    -webkit-text-fill-color: white;
+    color: white;
+    background: none;
+  }
+}
+
+/* Close (X) button inside AI panel header */
+.ai-panel-header {
+  position: relative;
+}
+
+.ai-panel-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #6B7280;
+  transition: background 0.15s, color 0.15s;
+}
+
+.ai-panel-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1F2937;
+}
+
+.ai-panel-close:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* ═══════ Responsive: adjust button on mobile ═══════ */
+@media (max-width: 900px) {
+  /* When PDF + panel stack vertically, the AI panel collapses to 0 height by default */
+  .viewer-split {
+    grid-template-columns: 1fr !important;
+    grid-template-rows: 1fr 0fr;
+  }
+  .viewer-split.ai-panel-open {
+    grid-template-rows: 60vh 40vh;
+  }
+  .ai-toggle-btn {
+    bottom: 20px;
+    right: 20px;
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .ai-toggle-btn {
+    bottom: 16px;
+    right: 16px;
+    padding: 11px;                                 /* becomes a circle */
+    border-radius: 50%;
+  }
+  .ai-toggle-label {
+    display: none;
+  }
 }

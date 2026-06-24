@@ -562,6 +562,7 @@ function closeViewer() {
 // ═══════════════════════════════════════════════════════
 
 let currentAiContext = null;  // { item, kind } — what the panel is currently bound to
+let aiPanelOpen = false;       // is the right-side panel currently visible?
 
 function setupAiPanel(item, kind) {
   currentAiContext = { item, kind };
@@ -581,23 +582,61 @@ function setupAiPanel(item, kind) {
   $("#aiTopic").value = "";
   $("#aiSuggestionChips").innerHTML = "";
 
+  const toggleBtn = $("#aiToggleBtn");
+
   if (!isLibraryBook) {
-    // Hide the whole AI panel for non-textbooks
-    $("#aiPanel").style.display = "none";
+    // Hide both the panel AND the toggle button for non-textbooks
+    closeAiPanel();
+    if (toggleBtn) toggleBtn.style.display = "none";
     return;
   }
 
-  $("#aiPanel").style.display = "flex";
+  // Library book — show the toggle button so teacher can open AI
+  if (toggleBtn) toggleBtn.style.display = "inline-flex";
+
+  // Start with the panel CLOSED. Teacher opens it deliberately.
+  closeAiPanel();
 
   if (!hasAiIntegration) {
-    // Show "AI coming soon" banner instead of input
+    // Inside the (still-hidden) panel, swap input area for "coming soon" banner.
+    // It'll appear correctly when teacher clicks the toggle.
     hide($("#aiInput"));
     show($("#aiUnavailable"));
     return;
   }
 
-  // Fetch and render the suggested topics for this book (async, non-blocking)
+  // Pre-fetch suggestions in the background so chips are ready when the panel opens.
   fetchAiSuggestions(item.notebook_book_id);
+}
+
+function openAiPanel() {
+  if (aiPanelOpen) return;
+  aiPanelOpen = true;
+  $("#viewerSplit")?.classList.add("ai-panel-open");
+  const btn = $("#aiToggleBtn");
+  if (btn) {
+    btn.classList.add("ai-toggle-active");
+    btn.setAttribute("aria-label", "Hide AI Assistant");
+    const label = btn.querySelector(".ai-toggle-label");
+    if (label) label.textContent = "Hide AI";
+  }
+}
+
+function closeAiPanel() {
+  aiPanelOpen = false;
+  $("#viewerSplit")?.classList.remove("ai-panel-open");
+  const btn = $("#aiToggleBtn");
+  if (btn) {
+    btn.classList.remove("ai-toggle-active");
+    btn.setAttribute("aria-label", "Open AI Assistant");
+    const label = btn.querySelector(".ai-toggle-label");
+    if (label) label.textContent = "AI Assistant";
+  }
+}
+
+function toggleAiPanel() {
+  if (aiPanelOpen) closeAiPanel();
+  else openAiPanel();
 }
 
 async function fetchAiSuggestions(bookId) {
@@ -1097,6 +1136,16 @@ $("#aiNewTopicBtn")?.addEventListener("click", () => {
 $("#aiTopic")?.addEventListener("keydown", (e) => {
   if (e.key === "Enter") generateAiContent();
 });
+
+// AI panel toggle button (on PDF area) + close button (on panel header)
+$("#aiToggleBtn")?.addEventListener("click", () => {
+  toggleAiPanel();
+  // When opening, focus the topic input for immediate typing
+  if (aiPanelOpen) {
+    setTimeout(() => $("#aiTopic")?.focus(), 250);
+  }
+});
+$("#aiPanelCloseBtn")?.addEventListener("click", closeAiPanel);
 
 $("#viewerBack").addEventListener("click", closeViewer);
 
