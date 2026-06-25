@@ -179,13 +179,14 @@ function populateFilters() {
 
 // Collapses subject variants into a single base subject so the dropdown
 // shows one entry instead of many:
-//   "Biology Paper 1" / "Biology Paper 2"   -> "Biology"
-//   "Biology Part 1" / "Biology Part 4"     -> "Biology"
+//   "Biology Paper 1" / "Biology Paper 2"        -> "Biology"
+//   "Biology Part 1" / "Biology Part 4"          -> "Biology"
+//   "Biology Part 2A" / "Biology Part 2B"        -> "Biology"
 // Plain subjects (no suffix) pass through unchanged.
 function baseSubject(s) {
   return String(s || "")
-    .replace(/\s+Paper\s*\d+\s*$/i, "")
-    .replace(/\s+Part\s*\d+\s*$/i, "")
+    .replace(/\s+Paper\s*\d+[A-Z]?\s*$/i, "")
+    .replace(/\s+Part\s*\d+[A-Z]?\s*$/i, "")
     .trim();
 }
 
