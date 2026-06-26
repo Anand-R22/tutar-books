@@ -633,6 +633,35 @@ function closeAiPanel() {
     const label = btn.querySelector(".ai-toggle-label");
     if (label) label.textContent = "AI Assistant";
   }
+  // Clear panel content so re-opening shows a fresh input form, not stale results.
+  // Only reset if we have a current AI context (a library book is loaded);
+  // otherwise we'd wipe the "AI unavailable" banner for unsupported items.
+  if (currentAiContext) {
+    resetAiPanelContent();
+  }
+}
+
+// Returns the AI panel to its baseline "input" state — clears any previous
+// results, hides loading/error states, empties the topic field. Called when
+// the user closes the panel so the next open feels fresh.
+function resetAiPanelContent() {
+  hide($("#aiLoading"));
+  hide($("#aiError"));
+  hide($("#aiResults"));
+  hide($("#aiUnavailable"));
+
+  const item = currentAiContext?.item;
+  const hasAi = item && !!item.notebook_book_id && !item.ai_unavailable;
+
+  if (hasAi) {
+    show($("#aiInput"));
+    const topicInput = $("#aiTopic");
+    if (topicInput) topicInput.value = "";
+  } else {
+    // Book doesn't have AI integration — show the "coming soon" banner
+    hide($("#aiInput"));
+    show($("#aiUnavailable"));
+  }
 }
 
 function toggleAiPanel() {
@@ -1128,12 +1157,24 @@ function escapeAttr(s) {
 // Wire up buttons
 $("#aiGenerateBtn")?.addEventListener("click", generateAiContent);
 $("#aiRetryBtn")?.addEventListener("click", generateAiContent);
-$("#aiNewTopicBtn")?.addEventListener("click", () => {
+// Switches the AI panel from results view back to the topic-input form.
+// Used by both the sticky back button (top of results) and the legacy
+// "Generate another topic" button (bottom of results).
+function showAiInputForm() {
   hide($("#aiResults"));
+  hide($("#aiError"));
+  hide($("#aiLoading"));
   show($("#aiInput"));
-  $("#aiTopic").value = "";
-  $("#aiTopic").focus();
-});
+  const topicInput = $("#aiTopic");
+  if (topicInput) {
+    topicInput.value = "";
+    topicInput.focus();
+  }
+}
+
+$("#aiNewTopicBtn")?.addEventListener("click", showAiInputForm);
+$("#aiBackBtn")?.addEventListener("click", showAiInputForm);
+
 $("#aiTopic")?.addEventListener("keydown", (e) => {
   if (e.key === "Enter") generateAiContent();
 });

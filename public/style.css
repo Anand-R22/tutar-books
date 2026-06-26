@@ -2024,3 +2024,454 @@ body:has(#viewerSection:not([style*="display:none"])) {
     display: none;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   AURORA THEME — AI panel makeover (Material/Gemini, refined)
+   Pushed at the end so it overrides any earlier .ai-* styles.
+═══════════════════════════════════════════════════════════ */
+
+/* ━━━━ PANEL CONTAINER ━━━━ */
+.ai-panel {
+  background: #FAFBFE !important;
+  border-left: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+  position: relative;
+  /* Don't override the existing overflow-y: auto from the base styles —
+     the aurora glows are positioned absolutely so they stay in place when
+     content scrolls. */
+}
+
+/* The Aurora — two soft radial gradients in opposite corners.
+   They feel ambient, like the panel has a light source behind it.
+   position: sticky + 0,0 + pointer-events:none means they stay anchored
+   to the visible viewport area, not the scrolling content. */
+.ai-panel::before {
+  content: '';
+  position: sticky;
+  top: 0;
+  display: block;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.ai-panel::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  display: block;
+  height: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Fixed-position background layer for the aurora glows.
+   Lives inside the panel via a pseudo-element on the header. */
+.ai-panel-header {
+  background: transparent !important;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+  padding: 20px 24px 16px !important;
+  position: sticky !important;
+  top: 0;
+  z-index: 5;
+  background: rgba(250, 251, 254, 0.85) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Aurora glows — attach to the panel itself as background gradients.
+   Because they're CSS background-image, they don't affect scrolling. */
+.ai-panel {
+  background-image:
+    radial-gradient(circle at top right, rgba(155, 114, 255, 0.16) 0%, transparent 35%),
+    radial-gradient(circle at bottom left, rgba(66, 133, 244, 0.10) 0%, transparent 40%) !important;
+  background-attachment: local;
+  background-repeat: no-repeat;
+}
+
+.ai-panel-header h3 {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--sans, system-ui, sans-serif) !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #1A1C20 !important;
+  margin: 0 !important;
+  letter-spacing: -0.01em;
+}
+
+/* Gradient sparkle — replaces the emoji ✨ */
+.ai-sparkle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: conic-gradient(from 45deg, #4285F4, #9B72FF, #D96570, #F2A93B, #4285F4);
+  color: transparent;
+  position: relative;
+  flex-shrink: 0;
+  font-size: 0;
+}
+.ai-sparkle::after {
+  content: "\f6d7";                                /* ti-sparkles */
+  font-family: 'tabler-icons', sans-serif;
+  font-size: 14px;
+  color: white;
+}
+
+.ai-panel-sub {
+  font-size: 12px !important;
+  color: #5F6368 !important;
+  margin: 6px 0 0 44px !important;
+}
+
+/* X close button — soft round, frosted */
+.ai-panel-close {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(8px);
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  top: 20px !important;
+  right: 20px !important;
+  color: #5F6368 !important;
+}
+.ai-panel-close:hover {
+  background: white !important;
+  color: #1A1C20 !important;
+}
+
+/* ━━━━ INPUT SECTION ━━━━ */
+.ai-input-section {
+  padding: 20px 24px !important;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+.ai-input-label {
+  color: #5F6368 !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+}
+
+.ai-input {
+  background: white !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  color: #1A1C20 !important;
+  padding: 13px 16px !important;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.ai-input:focus {
+  border-color: #4285F4 !important;
+  box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.12) !important;
+}
+
+.ai-generate-btn {
+  background: linear-gradient(135deg, #4285F4 0%, #9B72FF 100%) !important;
+  border-radius: 999px !important;
+  padding: 13px 16px !important;
+  box-shadow: 0 4px 12px rgba(155, 114, 255, 0.25);
+  font-weight: 500 !important;
+  letter-spacing: 0.01em;
+  transition: transform 0.15s, box-shadow 0.15s !important;
+}
+.ai-generate-btn:hover {
+  background: linear-gradient(135deg, #5495F5 0%, #AB82FF 100%) !important;
+  box-shadow: 0 6px 16px rgba(155, 114, 255, 0.35) !important;
+  transform: translateY(-1px);
+}
+.ai-generate-btn:active {
+  transform: translateY(0);
+}
+
+/* ━━━━ SUGGESTION CHIPS ━━━━ */
+.ai-suggestions {
+  border-top: none !important;
+  padding-top: 16px !important;
+}
+
+.ai-suggestions-label {
+  color: #5F6368 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.1em !important;
+  margin-bottom: 12px !important;
+}
+
+.ai-chip {
+  background: white !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.08) !important;
+  border-radius: 999px !important;
+  color: #1A1C20 !important;
+  font-size: 12px !important;
+  padding: 7px 14px !important;
+  transition: all 0.15s !important;
+}
+.ai-chip:hover {
+  background: linear-gradient(135deg, #E8F0FE, #F3E8FD) !important;
+  color: #1A1C20 !important;
+  border-color: rgba(155, 114, 255, 0.3) !important;
+  transform: translateY(-1px);
+}
+
+/* ━━━━ RESULTS — each section becomes a soft card ━━━━ */
+.ai-results {
+  padding: 14px !important;
+}
+
+.ai-section {
+  background: white !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+  border-radius: 16px !important;
+  padding: 16px 20px !important;
+  margin-bottom: 10px !important;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+}
+.ai-section:last-of-type {
+  margin-bottom: 0 !important;
+}
+
+.ai-section.ai-sources {
+  background: white !important;
+  margin: 10px 0 0 0 !important;
+  padding: 16px 20px !important;
+}
+
+/* Section titles get a colored pill tag prefix — set per section below */
+.ai-section-title {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-family: var(--sans, system-ui, sans-serif) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  padding: 4px 12px !important;
+  border-radius: 999px !important;
+  margin: 0 0 12px 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Color-coded section tags */
+#aiSummarySection .ai-section-title {
+  background: linear-gradient(135deg, #F3E8FD, #E8F0FE);
+  color: #6B21A8 !important;
+}
+#aiLessonPlanSection .ai-section-title {
+  background: linear-gradient(135deg, #E8F0FE, #DDF0FB);
+  color: #1A73E8 !important;
+}
+#aiVideosSection .ai-section-title {
+  background: linear-gradient(135deg, #FCE7F3, #FEE4E2);
+  color: #9D174D !important;
+}
+#aiImagesSection .ai-section-title {
+  background: linear-gradient(135deg, #DCFCE7, #D1FAE5);
+  color: #166534 !important;
+}
+#aiMcqsSection .ai-section-title {
+  background: linear-gradient(135deg, #FEF3C7, #FFEDD5);
+  color: #92400E !important;
+}
+#aiModelsSection .ai-section-title {
+  background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
+  color: #475569 !important;
+}
+#aiSourcesSection .ai-section-title {
+  background: linear-gradient(135deg, #F1F5F9, #E2E8F0);
+  color: #475569 !important;
+}
+
+/* ━━━━ SECTION BODY TYPOGRAPHY ━━━━ */
+.ai-section-body {
+  font-family: var(--sans, system-ui, sans-serif) !important;
+  color: #202124 !important;
+  font-size: 13.5px !important;
+  line-height: 1.7 !important;
+}
+.ai-section-body p {
+  color: #202124 !important;
+  font-size: 13.5px !important;
+}
+.ai-section-body strong {
+  color: #1A1C20 !important;
+  font-weight: 500 !important;
+}
+
+/* ━━━━ KaTeX / Math equations — give them a subtle gradient block ━━━━ */
+.ai-section-body .katex-display {
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.08), rgba(155, 114, 255, 0.08));
+  border-radius: 12px;
+  padding: 14px 12px !important;
+  margin: 14px 0 !important;
+}
+
+/* ━━━━ VIDEO CARDS ━━━━ */
+.ai-card {
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.02), transparent) !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+  border-radius: 12px !important;
+  padding: 12px !important;
+  transition: all 0.15s !important;
+}
+.ai-card:hover {
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.04), transparent) !important;
+  border-color: rgba(255, 0, 0, 0.15) !important;
+  transform: translateX(2px);
+}
+.ai-card-title {
+  color: #1A1C20 !important;
+  font-size: 12.5px !important;
+  font-weight: 500 !important;
+}
+.ai-card-meta {
+  color: #5F6368 !important;
+  font-size: 11px !important;
+}
+
+/* ━━━━ MCQs ━━━━ */
+.ai-mcq {
+  background: #F8FAFC !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+  border-radius: 12px !important;
+  padding: 14px !important;
+  margin-bottom: 10px !important;
+}
+.ai-mcq-question {
+  color: #1A1C20 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin-bottom: 10px !important;
+}
+.ai-mcq-option {
+  background: white !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.06) !important;
+  border-radius: 999px !important;
+  padding: 10px 16px !important;
+  color: #202124 !important;
+  font-size: 12.5px !important;
+  transition: all 0.15s !important;
+}
+.ai-mcq-option:hover:not(:disabled) {
+  background: linear-gradient(135deg, #E8F0FE, #F3E8FD) !important;
+  border-color: rgba(155, 114, 255, 0.3) !important;
+  transform: translateY(-1px);
+}
+.ai-mcq-option.ai-mcq-correct {
+  background: linear-gradient(135deg, #DCFCE7, #D1FAE5) !important;
+  border-color: #22C55E !important;
+  color: #166534 !important;
+}
+.ai-mcq-option.ai-mcq-wrong {
+  background: linear-gradient(135deg, #FEE2E2, #FECACA) !important;
+  border-color: #EF4444 !important;
+  color: #991B1B !important;
+}
+
+/* MCQ feedback panel */
+.ai-mcq-feedback {
+  background: white !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.06) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  margin-top: 12px !important;
+}
+
+/* ━━━━ IMAGE GRID ━━━━ */
+.ai-image-card {
+  border-radius: 12px !important;
+  background: #F1F5F9 !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.04) !important;
+  transition: transform 0.15s !important;
+}
+.ai-image-card:hover {
+  transform: scale(1.02);
+}
+
+/* ━━━━ SOURCES ━━━━ */
+.ai-source {
+  background: #F8FAFC !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 14px !important;
+  margin-bottom: 6px !important;
+  font-size: 12px !important;
+  color: #475569 !important;
+  line-height: 1.55 !important;
+}
+
+/* ━━━━ LOADING STATE ━━━━ */
+.ai-loading {
+  padding: 40px 24px !important;
+}
+.ai-loading-text {
+  color: #1A1C20 !important;
+  font-weight: 500 !important;
+}
+.ai-loading-hint {
+  color: #5F6368 !important;
+}
+
+/* ━━━━ UNAVAILABLE BANNER ━━━━ */
+.ai-unavailable {
+  background: white !important;
+  border: 1px dashed rgba(155, 114, 255, 0.3) !important;
+  border-radius: 14px !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   AURORA — Sticky "Back to topic" button at top of results
+═══════════════════════════════════════════════════════════ */
+
+/* Sticky bar that holds the back button. Sits just below the panel header
+   and stays pinned at the top while results scroll behind it. */
+.ai-results-stickybar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  margin: -14px -14px 10px;              /* extend to edges of .ai-results padding */
+  padding: 10px 22px;
+  background: rgba(250, 251, 254, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.04);
+}
+
+/* The back button — pill, white background, subtle purple border to match Aurora */
+.ai-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  background: white;
+  border: 0.5px solid rgba(155, 114, 255, 0.25);
+  border-radius: 999px;
+  font-family: var(--sans, system-ui, sans-serif);
+  font-size: 12px;
+  font-weight: 500;
+  color: #6B21A8;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.05s;
+}
+
+.ai-back-btn:hover {
+  background: linear-gradient(135deg, #F3E8FD, #E8F0FE);
+  border-color: rgba(155, 114, 255, 0.4);
+}
+
+.ai-back-btn:active {
+  transform: translateY(1px);
+}
+
+.ai-back-btn svg {
+  flex-shrink: 0;
+}
+
+/* When the existing "Generate another topic" button at the BOTTOM of results
+   is visible, soften it since the sticky back button is now the primary action. */
+.ai-new-topic-btn {
+  opacity: 0.75;
+}
+.ai-new-topic-btn:hover {
+  opacity: 1;
+}
